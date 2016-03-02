@@ -1,4 +1,7 @@
 #Chainels Provider for OAuth 2.0 Client
+![](http://i.imgur.com/1inwYrO.png)
+
+[![Latest Stable Version](https://poser.pugx.org/chainels/oauth2-chainels/v/stable)](https://packagist.org/packages/chainels/oauth2-chainels) [![Total Downloads](https://poser.pugx.org/chainels/oauth2-chainels/downloads)](https://packagist.org/packages/chainels/oauth2-chainels) [![Latest Unstable Version](https://poser.pugx.org/chainels/oauth2-chainels/v/unstable)](https://packagist.org/packages/chainels/oauth2-chainels) [![License](https://poser.pugx.org/chainels/oauth2-chainels/license)](https://packagist.org/packages/chainels/oauth2-chainels)
 
 This package provides Chainels OAuth 2.0 support for the [PHP League OAuth 2.0 Client](https://github.com/thephpleague/oauth2-client).
 
@@ -54,7 +57,7 @@ if (!isset($_GET['code'])) {
         exit('Oh dear...');
     }
 
-    // Use this to interact with an API on the users behalf
+    // Use this to interact with the Chainels API on the users behalf
     echo $token->getToken();
 }
 ```
@@ -72,7 +75,7 @@ $token = $provider->getAccessToken('client_credentials', [
     'code' => $_GET['code']
 ]);
 
-// Use this to interact with an API on the users behalf
+// Use this to interact with the Chainels ![](http://i.imgur.com/kN6OVfE.png)API
 echo $token->getToken();
 }
 ```
