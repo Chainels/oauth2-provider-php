@@ -1,0 +1,46 @@
+{
+    "id": "121454942361979295",
+    "name": "Willem Smit",
+    "email": "willemsmit44@aktiesport-chainels.com",
+    "language_key": "NL",
+    "timezone": "Europe/Amsterdam",
+    "active_company": "111454942326566541",
+    "rights": "spectator",
+    "function": "Directeur",
+    "contact": {
+        "phone": "0667701811",
+        "email": "willemsmit44@aktiesport-chainels.com",
+        "remark": "Gebruik mobiel voor na kantoor uren"
+    },
+    "image": {
+        "id": "311454942361906517",
+        "name": "photo5.png",
+        "created_at": "2016-02-08T14:39:21+00:00",
+        "size": "219284",
+        "mime_type": "image/png",
+        "url": "https://dev.chainels.com/image/311454942361906517",
+        "resource_type": "File"
+    },
+    "companies": [
+        {
+            "id": "111454942326566541",
+            "name": "Aktiesport",
+            "sector": {
+                "key": "cg",
+                "name": "Detailhandel &amp; Groothandel"
+            },
+            "branche": {
+                "key": "baj",
+                "name": "Sport &amp; vrije tijd"
+            },
+            "retail": {
+                "key": "s",
+                "name": "Vrije tijd, sport"
+            },
+            "company_type": "other",
+            "group": false,
+            "logo": "https://dev.chainels.com/image/311454942326113037",
+            "logo_thumbnail": "https://dev.chainels.com/image/311454942326212427"
+        }
+    ]
+}

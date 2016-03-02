@@ -1,0 +1,28 @@
+{
+    "name": "chainels/oauth2-chainels",
+    "description": "Oauth2 Provider for Chainels",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christiaan Titos Bolivar",
+            "email": "titosbolivar@chainels.com"
+        }
+    ],
+    "require": {
+        "league/oauth2-client": "^1.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.2",
+        "phpunit/php-code-coverage": "* 3.2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Chainels\\OAuth2\\Client\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Chainels\\OAuth2\\Client\\Test\\": "test/src/"
+        }
+    }
+}
