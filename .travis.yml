@@ -11,10 +11,11 @@ before_script:
   - travis_retry composer install --no-interaction --prefer-source
 
 script:
+  - mkdir -p build/logs
   - ./vendor/bin/phpunit --coverage-text
 
-after_script:
-  - php vendor/bin/coveralls
+after_success:
+  - travis_retry php vendor/bin/coveralls -v
 
 branches:
   except:
