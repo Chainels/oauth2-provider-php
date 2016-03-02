@@ -83,7 +83,7 @@ class ChainelsTest extends PHPUnit_Framework_TestCase {
         $userResponse->method('getHeader')->willReturn(['content-type' => 'application/json']);
 
         $client = $this->getMockBuilder(ClientInterface::class)->getMock();
-        $client->expects($this->exactly(2))->method('send')->willReturn($postResponse, $userResponse);
+        $client->expects($this->exactly(2))->method('send')->will($this->onConsecutiveCalls($postResponse, $userResponse));
 
         $this->provider->setHttpClient($client);
         $token = $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
@@ -119,7 +119,7 @@ class ChainelsTest extends PHPUnit_Framework_TestCase {
         $userResponse->method('getHeader')->willReturn(['content-type' => 'application/json']);
 
         $client = $this->getMockBuilder(ClientInterface::class)->getMock();
-        $client->expects($this->exactly(2))->method('send')->willReturn($postResponse, $userResponse);
+        $client->expects($this->exactly(2))->method('send')->will($this->onConsecutiveCalls($postResponse, $userResponse));
 
         $this->provider->setHttpClient($client);
         $token = $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
