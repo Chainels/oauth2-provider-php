@@ -5,6 +5,12 @@
 
 This package provides Chainels OAuth 2.0 support for the [PHP League OAuth 2.0 Client](https://github.com/thephpleague/oauth2-client).
 
+##Install
+Via Composer:
+```
+$ composer require chainels/oauth2-chainels
+```
+
 ##Usage
 
 Usage is the same as The League's OAuth client, using `\Chainels\OAuth2\Client\Provider\Chainels` as the provider.
@@ -75,7 +81,7 @@ $token = $provider->getAccessToken('client_credentials', [
     'code' => $_GET['code']
 ]);
 
-// Use this to interact with the Chainels ![](http://i.imgur.com/kN6OVfE.png)API
+// Use this to interact with the Chainels API
 echo $token->getToken();
 }
 ```
