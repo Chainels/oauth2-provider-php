@@ -1,24 +1,24 @@
-#Chainels Provider for OAuth 2.0 Client
+# Chainels Provider for OAuth 2.0 Client
 ![](http://i.imgur.com/1inwYrO.png)
 
 [![Latest Stable Version](https://poser.pugx.org/chainels/oauth2-chainels/v/stable)](https://packagist.org/packages/chainels/oauth2-chainels) [![Total Downloads](https://poser.pugx.org/chainels/oauth2-chainels/downloads)](https://packagist.org/packages/chainels/oauth2-chainels) [![Latest Unstable Version](https://poser.pugx.org/chainels/oauth2-chainels/v/unstable)](https://packagist.org/packages/chainels/oauth2-chainels) [![License](https://poser.pugx.org/chainels/oauth2-chainels/license)](https://packagist.org/packages/chainels/oauth2-chainels) [![Build Status](https://travis-ci.org/Chainels/oauth2-provider-php.svg?branch=master)](https://travis-ci.org/Chainels/oauth2-provider-php) [![Coverage Status](https://coveralls.io/repos/github/Chainels/oauth2-provider-php/badge.svg?branch=master)](https://coveralls.io/github/Chainels/oauth2-provider-php?branch=master)
 
 This package provides Chainels OAuth 2.0 support for the [PHP League OAuth 2.0 Client](https://github.com/thephpleague/oauth2-client).
 
-##Install
+## Install
 Via Composer:
 ```
 $ composer require chainels/oauth2-chainels
 ```
 
-##Usage
+## Usage
 
 Usage is the same as The League's OAuth client, using `\Chainels\OAuth2\Client\Provider\Chainels` as the provider.
 
-##Register Oauth Client
+## Register Oauth Client
 In order to use this library, you must create an OAuth client on Chainels.com, to do this, you must have an account and company on Chainels. For more details, check our [developer page](https://www.chainels.com/developer).
 
-##Authorization Code Grant
+## Authorization Code Grant
 
 ```php
 $provider = new Chainels\OAuth2\Client\Provider\Chainels([
@@ -68,7 +68,7 @@ if (!isset($_GET['code'])) {
 }
 ```
 
-##Client Credential Grant
+## Client Credential Grant
 
 ```php
 $provider = new Chainels\OAuth2\Client\Provider\Chainels([
@@ -86,7 +86,7 @@ echo $token->getToken();
 }
 ```
 
-##Group Token Grant
+## Group Token Grant
 
 This is the same as the authorization code grant, except make sure to pass a `group` parameter to the `getAuthorizationUrl()` method.
 
