@@ -2,7 +2,9 @@
 
 namespace Chainels\OAuth2\Client\Provider;
 
-class ChainelsResourceOwner implements \League\OAuth2\Client\Provider\ResourceOwnerInterface {
+use League\OAuth2\Client\Provider\ResourceOwnerInterface;
+
+class ChainelsResourceOwner implements ResourceOwnerInterface {
 
     /**
      * @var array

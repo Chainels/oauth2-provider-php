@@ -3,15 +3,22 @@
 namespace Chainels\OAuth2\Client\Test\Provider;
 
 use Chainels\OAuth2\Client\Provider\Chainels;
+use Chainels\OAuth2\Client\Provider\ChainelsResourceOwner;
 use GuzzleHttp\ClientInterface;
+use League\OAuth2\Client\Provider\AbstractProvider;
 use PHPUnit_Framework_TestCase;
 use Psr\Http\Message\ResponseInterface;
 
-class ChainelsTest extends PHPUnit_Framework_TestCase {
+class ChainelsTest extends PHPUnit_Framework_TestCase
+{
 
+    /**
+     * @var AbstractProvider
+     */
     protected $provider;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->provider = new Chainels([
             'clientId' => 'mock_client_id',
             'clientSecret' => 'mock_secret',
@@ -19,7 +26,8 @@ class ChainelsTest extends PHPUnit_Framework_TestCase {
         ]);
     }
 
-    public function testAuthorizationUrl() {
+    public function testAuthorizationUrl()
+    {
         $url = $this->provider->getAuthorizationUrl();
 
         $uri = parse_url($url);
@@ -33,26 +41,30 @@ class ChainelsTest extends PHPUnit_Framework_TestCase {
         $this->assertNotNull($this->provider->getState());
     }
 
-    public function testScopes() {
+    public function testScopes()
+    {
         $options = ['scope' => [uniqid(), uniqid()]];
         $url = $this->provider->getAuthorizationUrl($options);
         $this->assertContains(urlencode(implode(' ', $options['scope'])), $url);
     }
 
-    public function testGetAuthorizationUrl() {
+    public function testGetAuthorizationUrl()
+    {
         $url = $this->provider->getAuthorizationUrl();
         $uri = parse_url($url);
         $this->assertEquals('/oauth/authorize', $uri['path']);
     }
 
-    public function testGetBaseAccessTokenUrl() {
+    public function testGetBaseAccessTokenUrl()
+    {
         $params = [];
         $url = $this->provider->getBaseAccessTokenUrl($params);
         $uri = parse_url($url);
         $this->assertEquals('/oauth/access_token', $uri['path']);
     }
 
-    public function testGetAccessToken() {
+    public function testGetAccessToken()
+    {
         $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
         $response->method('getBody')->willReturn('{"access_token":"mock_access_token","refresh_token": "mock_refresh_token", "token_type": "Bearer", "expires_in": 5}');
         $response->method('getHeader')->willReturn(['content-type' => 'application/json']);
@@ -69,8 +81,8 @@ class ChainelsTest extends PHPUnit_Framework_TestCase {
         $this->assertNull($token->getResourceOwnerId());
     }
 
-    public function testUserData() {
-
+    public function testUserData()
+    {
         $userJSON = file_get_contents(__DIR__ . '/mockuser.json');
         $userArray = json_decode($userJSON, true);
 
@@ -83,11 +95,13 @@ class ChainelsTest extends PHPUnit_Framework_TestCase {
         $userResponse->method('getHeader')->willReturn(['content-type' => 'application/json']);
 
         $client = $this->getMockBuilder(ClientInterface::class)->getMock();
-        $client->expects($this->exactly(2))->method('send')->will($this->onConsecutiveCalls($postResponse, $userResponse));
+        $client->expects($this->exactly(2))->method('send')->will($this->onConsecutiveCalls($postResponse,
+            $userResponse));
 
         $this->provider->setHttpClient($client);
         $token = $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
         $user = $this->provider->getResourceOwner($token);
+        /* @var $user ChainelsResourceOwner */
 
         $this->assertEquals($userArray['id'], $user->getId());
         $this->assertEquals($userArray['id'], $user->toArray()['id']);
@@ -103,8 +117,8 @@ class ChainelsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($userArray['active_company'], $user->toArray()['active_company']);
     }
 
-    public function testUserDataNoImage() {
-
+    public function testUserDataNoImage()
+    {
         $userJSON = file_get_contents(__DIR__ . '/mockuser.json');
         $userArray = json_decode($userJSON, true);
         unset($userArray['image']);
@@ -119,7 +133,8 @@ class ChainelsTest extends PHPUnit_Framework_TestCase {
         $userResponse->method('getHeader')->willReturn(['content-type' => 'application/json']);
 
         $client = $this->getMockBuilder(ClientInterface::class)->getMock();
-        $client->expects($this->exactly(2))->method('send')->will($this->onConsecutiveCalls($postResponse, $userResponse));
+        $client->expects($this->exactly(2))->method('send')->will($this->onConsecutiveCalls($postResponse,
+            $userResponse));
 
         $this->provider->setHttpClient($client);
         $token = $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
@@ -129,9 +144,10 @@ class ChainelsTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException League\OAuth2\Client\Provider\Exception\IdentityProviderException
+     * @expectedException \League\OAuth2\Client\Provider\Exception\IdentityProviderException
      * */
-    public function testExceptionThrownWhenAuthErrorObjectReceived() {
+    public function testExceptionThrownWhenAuthErrorObjectReceived()
+    {
         $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
         $response->method('getBody')->willReturn('{"error": "invalid_request","message": "The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed."}');
         $response->method('getHeader')->willReturn(['content-type' => 'application/json']);
@@ -145,8 +161,8 @@ class ChainelsTest extends PHPUnit_Framework_TestCase {
         $this->provider->getAccessToken('authorization_code', ['code' => 'mock_authorization_code']);
     }
 
-    public function testDemoUrl() {
-
+    public function testDemoUrl()
+    {
         $this->provider = new Chainels([
             'clientId' => 'mock_client_id',
             'clientSecret' => 'mock_secret',
@@ -157,7 +173,8 @@ class ChainelsTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('https://demo.chainels.com/oauth/authorize', $this->provider->getBaseAuthorizationUrl());
     }
 
-    public function testGetAccessTokenViaGroupGrant() {
+    public function testGetAccessTokenViaGroupGrant()
+    {
         $response = $this->getMockBuilder(ResponseInterface::class)->getMock();
         $response->method('getBody')->willReturn('{"access_token":"mock_access_token","refresh_token": "mock_refresh_token", "token_type": "Bearer", "expires_in": 5}');
         $response->method('getHeader')->willReturn(['content-type' => 'application/json']);
