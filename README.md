@@ -143,7 +143,7 @@ if (!isset($_GET['code'])) {
 }
 ```
 
-###Refreshing a Token
+### Refreshing a Token
 
 Once your application is authorized, you can refresh an expired token using a refresh token rather than going through the entire process of obtaining a brand new token. To do so, simply reuse this refresh token from your data store to request a refresh.
 
