@@ -6,12 +6,13 @@ use Chainels\OAuth2\Client\Provider\Chainels;
 use Chainels\OAuth2\Client\Provider\ChainelsResourceOwner;
 use GuzzleHttp\ClientInterface;
 use League\OAuth2\Client\Provider\AbstractProvider;
+use League\OAuth2\Client\Tool\QueryBuilderTrait;
 use PHPUnit_Framework_TestCase;
 use Psr\Http\Message\ResponseInterface;
 
 class ChainelsTest extends PHPUnit_Framework_TestCase
 {
-
+    use QueryBuilderTrait;
     /**
      * @var AbstractProvider
      */
@@ -57,10 +58,12 @@ class ChainelsTest extends PHPUnit_Framework_TestCase
 
     public function testGetBaseAccessTokenUrl()
     {
-        $params = [];
-        $url = $this->provider->getBaseAccessTokenUrl($params);
-        $uri = parse_url($url);
-        $this->assertEquals('/oauth/access_token', $uri['path']);
+        $scopeSeparator = ' ';
+        $options = ['scope' => [uniqid(), uniqid()]];
+        $query = ['scope' => implode($scopeSeparator, $options['scope'])];
+        $url = $this->provider->getAuthorizationUrl($options);
+        $encodedScope = $this->buildQueryString($query);
+        $this->assertContains($encodedScope, $url);
     }
 
     public function testGetAccessToken()
