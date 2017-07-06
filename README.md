@@ -10,15 +10,20 @@ Via Composer:
 ```
 $ composer require chainels/oauth2-chainels
 ```
+Version 2.* of this library requires PHP 5.6 or up. If you need support for PHP 5.5, use version 1.*, though we recommend upgrading your PHP version.
+
+## Register Oauth Client
+In order to use this library, you must create an OAuth client on Chainels.com, to do this, you must have an account and company on Chainels. For more details, check our [developer page](https://www.chainels.com/developer).
 
 ## Usage
 
 Usage is the same as The League's OAuth client, using `\Chainels\OAuth2\Client\Provider\Chainels` as the provider.
 
-## Register Oauth Client
-In order to use this library, you must create an OAuth client on Chainels.com, to do this, you must have an account and company on Chainels. For more details, check our [developer page](https://www.chainels.com/developer).
+### Requesting an access token
 
-## Authorization Code Grant
+Chainels supports the authorization code grant, the client credentials grant, and our own custom group token grant, for requesting an access token.
+
+#### Authorization Code Grant
 
 ```php
 $provider = new Chainels\OAuth2\Client\Provider\Chainels([
@@ -68,7 +73,7 @@ if (!isset($_GET['code'])) {
 }
 ```
 
-## Client Credential Grant
+#### Client Credential Grant
 
 ```php
 $provider = new Chainels\OAuth2\Client\Provider\Chainels([
@@ -86,7 +91,7 @@ echo $token->getToken();
 }
 ```
 
-## Group Token Grant
+#### Group Token Grant
 
 This is the same as the authorization code grant, except make sure to pass a `group` parameter to the `getAuthorizationUrl()` method.
 
@@ -137,3 +142,46 @@ if (!isset($_GET['code'])) {
     echo $token->getToken();
 }
 ```
+
+###Refreshing a Token
+
+Once your application is authorized, you can refresh an expired token using a refresh token rather than going through the entire process of obtaining a brand new token. To do so, simply reuse this refresh token from your data store to request a refresh.
+
+```php
+$provider = new Chainels\OAuth2\Client\Provider\Chainels([
+    'clientId'          => '{chainels-client-id}',
+    'clientSecret'      => '{chainels-client-secret}',
+    'redirectUri'       => 'https://example.com/callback-url',
+]);
+
+$existingAccessToken = getAccessTokenFromYourDataStore();
+
+if ($existingAccessToken->hasExpired()) {
+    $newAccessToken = $provider->getAccessToken('refresh_token', [
+        'refresh_token' => $existingAccessToken->getRefreshToken()
+    ]);
+
+    // Purge old access token and store new access token to your data store.
+}
+```
+
+### Making authenticated API requests
+Once you have an access token, this library provides a simple mechanism to make authenticated calls to our api.
+
+```php
+$provider = new Chainels\OAuth2\Client\Provider\Chainels([
+    'clientId'          => '{chainels-client-id}',
+    'clientSecret'      => '{chainels-client-secret}',
+    'redirectUri'       => 'https://example.com/callback-url',
+]);
+
+$accessToken = getAccessTokenFromYourDataStore();
+
+// getAuthenticatedRequest returns a Psr\Http\Message\RequestInterface object
+$request = $provider->getAuthenticatedRequest('GET', 'https://www.chainels.com/api/v2/companies/{id}', $accessToken);
+
+//this RequestInterface can then be passed to the getParsedResponse() method to execute the request:
+$responseJSON = $provider->getParsedResponse($request);
+```
+
+`$responseJSON` now contains the response data as a key->value array. If you want the full `Psr\Http\Message\ResponseInterface` instead of a parsed result, simply call `getResponse()` instead of `getParsedResponse()` 
