@@ -11,7 +11,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class Chainels extends AbstractProvider
 {
-
     use BearerAuthorizationTrait;
 
     protected $isDemo;

@@ -44,9 +44,12 @@ class ChainelsTest extends PHPUnit_Framework_TestCase
 
     public function testScopes()
     {
-        $options = ['scope' => ['scope_1', 'scope_2']];
+        $scopeSeparator = ' ';
+        $options = ['scope' => [uniqid(), uniqid()]];
+        $query = ['scope' => implode($scopeSeparator, $options['scope'])];
         $url = $this->provider->getAuthorizationUrl($options);
-        $this->assertContains(urlencode(implode(' ', $options['scope'])), $url);
+        $encodedScope = $this->buildQueryString($query);
+        $this->assertContains($encodedScope, $url);
     }
 
     public function testGetAuthorizationUrl()
@@ -58,12 +61,10 @@ class ChainelsTest extends PHPUnit_Framework_TestCase
 
     public function testGetBaseAccessTokenUrl()
     {
-        $scopeSeparator = ' ';
-        $options = ['scope' => [uniqid(), uniqid()]];
-        $query = ['scope' => implode($scopeSeparator, $options['scope'])];
-        $url = $this->provider->getAuthorizationUrl($options);
-        $encodedScope = $this->buildQueryString($query);
-        $this->assertContains($encodedScope, $url);
+        $params = [];
+        $url = $this->provider->getBaseAccessTokenUrl($params);
+        $uri = parse_url($url);
+        $this->assertEquals('/oauth/access_token', $uri['path']);
     }
 
     public function testGetAccessToken()
